@@ -66,6 +66,11 @@ export default class Noco {
     return `${siteUrl}${Noco._this?.config?.dashboardPath}`;
   }
 
+  public static async forceInit(): Promise<Router> {
+    Noco._this = new Noco();
+    return Noco._this.init();
+  }
+
   public static async init(
     args?: {
       progressCallback?: Function;
@@ -252,9 +257,7 @@ export default class Noco {
     //   this.config.dashboardPath,
     //   await this.ncToolApi.expressMiddleware()
     // );
-    this.router.use(NcToolGui.expressMiddleware(
-      this.config.dashboardPath,
-    ));
+    this.router.use(NcToolGui.expressMiddleware(this.config.dashboardPath));
     this.router.get('/', (_req, res) =>
       res.redirect(this.config.dashboardPath)
     );
